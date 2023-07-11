@@ -1,29 +1,24 @@
-import logo from "./logo.svg";
 import "./App.css";
-
+import React from "react";
+import Navbar from "./Components/Navbar/index";
+import Userindex from './Components/Userindex/userindex'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Login from "./Pages/login";
+import Signup from './Pages/signup'
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo"
-          alt="logo" />
 
-        <p>A simple React app.....</p>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Userindex />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </Router>
 
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <form action="../../post" method="post"
-          className="form">
-          <button type="submit">Connected?</button>
-        </form>
-      </header>
-    </div>
+    </div >
   );
 }
 

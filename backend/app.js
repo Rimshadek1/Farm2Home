@@ -4,7 +4,8 @@ var indexRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 const cors = require('cors');
 var db = require('./config/connection');
-
+const bodyParser = require('body-parser');
+const userHelpers = require('./Helpers/userHelper');
 
 
 
@@ -13,8 +14,33 @@ var db = require('./config/connection');
 app.use(cors());
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
+app.use(bodyParser.json());
+app.post("/signup", (req, res) => {
+    console.log(req.body);
+    userHelpers.Signup(req.body).then((response) => {
+        if (response.error) {
+            console.log('errror');
+            res.json({ error: response.error }); // Send the error message as JSON response
+        } else {
+            res.json({ message: 'Signup successful' }); // Send success message as JSON response
+        }
+    })
 
-
+});
+app.post('/login', (req, res) => {
+    console.log(req.body);
+    userHelpers.Login(req.body).then((response) => {
+        if (response.status) {
+            res.json({ status: response.status });
+        } else {
+            res.json({ error: response.error });
+        }
+    })
+})
+app.get('/login', (req, res) => {
+    // Send a JSON response to indicate successful signup
+    res.json({ message: 'Signup successful' });
+});
 
 
 db.connect((err) => {
@@ -38,10 +64,6 @@ app.use(function (err, req, res, next) {
 
 
 
-app.post("/post", (req, res) => {
-    console.log("Connected to React");
-    res.redirect("/");
-});
 
 const PORT = process.env.PORT || 8080;
 
